@@ -17,5 +17,6 @@ au.typewrite(pswwd)
 au.press('enter')
 
 f = open("contraseña.txt", "w")
+print("Hola")
 f.write(pswwd)
 f.close()
