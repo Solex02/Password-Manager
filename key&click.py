@@ -5,8 +5,8 @@ import tkinter as tk
 from tkinter import ttk
 import os
 import pyperclip
-
-
+from tkinter import messagebox
+from PIL import Image, ImageTk
 
 
 def create_file():
@@ -21,14 +21,20 @@ def create_file():
         entry_name.delete(0, 'end')
         icon_label.pack(side='left')
         input_frame.pack()
+        
     else:
-        print("este archivo ya existe")
+        messagebox.showerror('File Manager', 'This File already exist')
         
 
 # window
 window = tk.Tk()
 window.title('Password Manager')
-window.geometry('400x250')
+window.geometry('400x400')
+
+ico = Image.open('icono.png')
+photo = ImageTk.PhotoImage(ico)
+window.wm_iconphoto(False, photo)
+
 
 
 # title 
@@ -38,7 +44,6 @@ title_lable.pack()
 #input field
 
 input_frame = ttk.Frame(master = window)
-
 
 entry_name = tk.StringVar()
 entry_name = ttk.Entry(master= input_frame)
