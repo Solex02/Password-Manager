@@ -3,16 +3,24 @@ import pyautogui as au
 import secrets
 import tkinter as tk
 import ttkbootstrap as ttk
+from ttkbootstrap import style
 import os
 import pyperclip
 from tkinter import messagebox
 from PIL import Image, ImageTk
+from configparser import ConfigParser
+
 
 lista_nombres_contr = []
-theme = "DARK"
-theme_list = ["PRIMARY",]
 
 
+config_file = 'config.ini'
+config = ConfigParser()
+config.read(config_file)
+
+
+
+theme_list = ["darkly","cosmo","flatly", "minty", "morph","solar", "superhero", "vapor"]
 def create_file():
     try:
         f = open(entry_name.get()+".txt")
@@ -43,8 +51,25 @@ def open_path():
     path = os.path.realpath(path)
     os.startfile(path)
 
+    
+def save_theme(theme):
+    window.style.theme_use(theme)
+    config.set('THEME','theme', theme)
+    with open("config.ini", "w") as f:
+        config.write(f)
+
 def change_theme():
-    print("Change Path")
+    theme_window = ttk.Toplevel(window)
+    theme_window.geometry("250x120")
+    theme_window.title("Cange Theme")
+   
+    theme_combo = ttk.Combobox(master=theme_window,values= theme_list)
+    theme_combo.current(0)
+    save_theme_button = ttk.Button(master=theme_window, command= lambda: save_theme(theme_combo.get()), text="Save")
+    print(theme_combo.get())
+
+    theme_combo.pack(pady=20)
+    save_theme_button.pack()
 
 
 lista_archivos = os.listdir(os.getcwd())
@@ -57,8 +82,10 @@ for i in lista_archivos:
 
 
 
+
+
 # window
-window = tk.Tk()
+window = ttk.Window(themename=config["THEME"]["theme"])
 window.title('Password Manager')
 window.geometry('400x400')
 
@@ -69,21 +96,23 @@ window.wm_iconphoto(False, photo)
 
 
 # title 
-title_lable = ttk.Label(master = window, text= 'Password Manager', font='Calibri 24 bold', bootstyle=theme)
+title_lable = ttk.Label(master = window, text= 'Password Manager', font='Calibri 24 bold')
 title_lable.pack()
 
+
+
 #input field
-combo = ttk.Combobox(values=lista_nombres_contr, bootstyle=theme)
-copy_button = ttk.Button(text="copy", command = copy_to_clip, bootstyle=theme)
+combo = ttk.Combobox(values=lista_nombres_contr)
+copy_button = ttk.Button(text="copy", command = copy_to_clip)
 
 input_frame = ttk.Frame(master = window)
 
 entry_name = tk.StringVar()
 entry_name = ttk.Entry(master= input_frame)
-icon_label = ttk.Label(master = input_frame, text= '✓', font='Calibri 15 bold', bootstyle=theme)
+icon_label = ttk.Label(master = input_frame, text= '✓', font='Calibri 15 bold')
 
 
-button = ttk.Button(master= window, text= 'Create Safe password', command= create_file, bootstyle=theme)
+button = ttk.Button(master= window, text= 'Create Safe password', command= create_file)
 
 entry_name.pack(side='left')
 
@@ -115,4 +144,3 @@ window.config(menu=menu_bar)
 # run
 
 window.mainloop()
-
