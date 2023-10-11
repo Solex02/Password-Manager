@@ -13,12 +13,8 @@ from configparser import ConfigParser
 
 lista_nombres_contr = []
 
-
-config_file = 'config.ini'
 config = ConfigParser()
-config.read(config_file)
-
-
+config.read("config.ini")
 
 theme_list = ["darkly","cosmo","flatly", "minty", "morph","solar", "superhero", "vapor"]
 def create_file():
