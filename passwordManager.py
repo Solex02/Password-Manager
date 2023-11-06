@@ -13,6 +13,8 @@ from configparser import ConfigParser
 
 lista_nombres_contr = []
 
+
+save_path = './passwords/'
 config = ConfigParser()
 config.read("config.ini")
 
@@ -26,6 +28,7 @@ def create_file():
             pswrd = secrets.token_urlsafe(10)
             f.write(pswrd)
             pyperclip.copy(pswrd)
+        os.rename("./", save_path)
         entry_name.delete(0, 'end')
         icon_label.pack(side='left')
         input_frame.pack()
@@ -59,6 +62,12 @@ def change_theme():
     theme_window.geometry("250x120")
     theme_window.title("Cange Theme")
    
+
+    ico = Image.open('theme_icon.png')
+    photo = ImageTk.PhotoImage(ico)
+    theme_window.wm_iconphoto(False, photo)
+
+
     theme_combo = ttk.Combobox(master=theme_window,values= theme_list)
     theme_combo.current(0)
     save_theme_button = ttk.Button(master=theme_window, command= lambda: save_theme(theme_combo.get()), text="Save")
@@ -66,6 +75,7 @@ def change_theme():
 
     theme_combo.pack(pady=20)
     save_theme_button.pack()
+
 
 
 lista_archivos = os.listdir(os.getcwd())
@@ -109,6 +119,7 @@ icon_label = ttk.Label(master = input_frame, text= '✓', font='Calibri 15 bold'
 
 
 button = ttk.Button(master= window, text= 'Create Safe password', command= create_file)
+
 
 entry_name.pack(side='left')
 
